@@ -26,7 +26,7 @@ function createServer(config) {
         })
     );
 
-    if (config.isProd) app.set('trust proxy', 1);
+    app.set('trust proxy', 1);
     app.disable('x-powered-by');
 
     // ─── Raw body capture for webhook signature verification ───
@@ -90,7 +90,7 @@ function createServer(config) {
     });
 
     // ─── Routes ───
-    app.use('/login', loginLimiter);
+    app.post('/login', loginLimiter);
     app.use('/api', webhookLimiter, createWebhookRouter(config, verifyWebhook));
     app.use('/', createDashboardRouter(config, auth));
 
