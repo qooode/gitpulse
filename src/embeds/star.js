@@ -3,7 +3,7 @@ function build(eventData) {
 
     if (action === 'deleted') {
         return {
-            color: 0x8b8d97,
+            color: 0x737373,
             description: `💫 **${eventData.sender}** unstarred **${eventData.repo}** (${extra?.starCount || '?'} ⭐)`,
             footer: { text: 'GitPulse' },
             timestamp: new Date().toISOString(),

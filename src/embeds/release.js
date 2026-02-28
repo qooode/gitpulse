@@ -5,7 +5,7 @@ function build(eventData, aiSummary) {
     const label = extra?.prerelease ? 'Pre-release' : 'Release';
 
     return {
-        color: 0xf0883e,
+        color: 0xe5e5e5,
         author: {
             name: eventData.sender,
             icon_url: eventData.senderAvatar,

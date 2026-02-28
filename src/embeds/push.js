@@ -1,14 +1,14 @@
 const COLORS = {
-    push: 0x5865f2,
-    pull_request_opened: 0x238636,
-    pull_request_merged: 0x8957e5,
-    pull_request_closed: 0xda3633,
-    issues_opened: 0x238636,
-    issues_closed: 0x8957e5,
-    release: 0xf0883e,
-    star: 0xe3b341,
-    fork: 0x58a6ff,
-    default: 0x5865f2,
+    push: 0xd4d4d4,
+    pull_request_opened: 0x4ade80,
+    pull_request_merged: 0xa3a3a3,
+    pull_request_closed: 0xf87171,
+    issues_opened: 0x4ade80,
+    issues_closed: 0xa3a3a3,
+    release: 0xe5e5e5,
+    star: 0xfbbf24,
+    fork: 0xd4d4d4,
+    default: 0xd4d4d4,
 };
 
 function buildPushEmbed(eventData, aiSummary) {

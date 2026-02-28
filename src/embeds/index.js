@@ -54,7 +54,7 @@ function stripLinks(embed) {
 
 function buildFallbackEmbed(eventData, aiSummary) {
     const embed = {
-        color: 0x5865f2,
+        color: 0xd4d4d4,
         author: {
             name: eventData.sender,
             icon_url: eventData.senderAvatar,

@@ -1,8 +1,8 @@
 const COLORS = {
-    opened: 0x238636,
-    closed: 0x8957e5,
-    reopened: 0x238636,
-    default: 0x5865f2,
+    opened: 0x4ade80,
+    closed: 0xa3a3a3,
+    reopened: 0x4ade80,
+    default: 0xd4d4d4,
 };
 
 function build(eventData, aiSummary) {
