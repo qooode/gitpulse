@@ -128,15 +128,26 @@ a:hover {
 }
 
 .login-logo .logo-icon {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   margin: 0 auto 16px;
-  background: hsl(var(--foreground));
-  border-radius: calc(var(--radius));
+  background: hsl(0 0% 100% / 0.06);
+  border: 1px solid hsl(0 0% 100% / 0.12);
+  border-radius: calc(var(--radius) + 2px);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  position: relative;
+}
+
+.login-logo .logo-icon::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  background: radial-gradient(circle, hsl(0 0% 100% / 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
 }
 
 .login-logo .logo-icon [data-lucide] {
@@ -321,15 +332,16 @@ a:hover {
 }
 
 .sidebar-header .logo-icon {
-  width: 28px;
-  height: 28px;
-  background: hsl(var(--foreground));
+  width: 30px;
+  height: 30px;
+  background: hsl(0 0% 100% / 0.06);
+  border: 1px solid hsl(0 0% 100% / 0.12);
   border-radius: calc(var(--radius) - 2px);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: hsl(var(--background));
+  color: hsl(var(--foreground));
 }
 
 .sidebar-header .logo-icon [data-lucide] {
