@@ -11,7 +11,7 @@ RUN apk del python3 make g++
 
 COPY . .
 
-RUN mkdir -p /app/data
+RUN mkdir -p /app/data && chown node:node /app/data
 
 EXPOSE 3000
 
