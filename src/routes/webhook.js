@@ -47,9 +47,10 @@ function createWebhookRouter(config, verifyWebhook) {
 
             // 3. Build Discord embed
             const embedBuilder = embeds.getEmbedBuilder(eventType);
-            const embed = embedBuilder
+            const rawEmbed = embedBuilder
                 ? embedBuilder(eventData, aiSummary)
                 : embeds.buildFallbackEmbed(eventData, aiSummary);
+            const embed = embeds.stripLinks(rawEmbed);
 
             // 4. Send to Discord
             const payload = discordSender.buildPayload(embed);

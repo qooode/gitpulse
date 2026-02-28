@@ -3,6 +3,7 @@ const pullRequestEmbed = require('./pullRequest');
 const releaseEmbed = require('./release');
 const issueEmbed = require('./issue');
 const starEmbed = require('./star');
+const eventStore = require('../services/eventStore');
 
 const EMBED_BUILDERS = {
     push: pushEmbed.build,
@@ -24,8 +25,35 @@ function shouldTranslate(eventType) {
     return !SKIP_AI.has(eventType);
 }
 
+function stripLinks(embed) {
+    const hideLinks = eventStore.getSetting('hide_repo_links') === 'true';
+    if (!hideLinks) return embed;
+
+    const cleaned = { ...embed };
+
+    // Remove embed-level URL (clickable title link)
+    delete cleaned.url;
+
+    // Remove author profile URL
+    if (cleaned.author) {
+        cleaned.author = { ...cleaned.author };
+        delete cleaned.author.url;
+    }
+
+    // Strip markdown links from fields (commit links etc.)
+    if (cleaned.fields) {
+        cleaned.fields = cleaned.fields.map((f) => ({
+            ...f,
+            // Turn [` sha`](url) message → `sha` message
+            value: f.value.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'),
+        }));
+    }
+
+    return cleaned;
+}
+
 function buildFallbackEmbed(eventData, aiSummary) {
-    return {
+    const embed = {
         color: 0x5865f2,
         author: {
             name: eventData.sender,
@@ -41,6 +69,7 @@ function buildFallbackEmbed(eventData, aiSummary) {
         },
         timestamp: new Date().toISOString(),
     };
+    return stripLinks(embed);
 }
 
-module.exports = { getEmbedBuilder, shouldTranslate, buildFallbackEmbed };
+module.exports = { getEmbedBuilder, shouldTranslate, buildFallbackEmbed, stripLinks };

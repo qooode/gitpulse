@@ -512,6 +512,31 @@ a:hover {
   text-overflow: ellipsis;
 }
 
+/* Resend Button */
+.btn-resend {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1;
+  transition: all var(--transition);
+}
+
+.btn-resend:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.btn-resend:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ───────────────────────────────────────────
    Settings
    ─────────────────────────────────────────── */

@@ -44,6 +44,7 @@ function init() {
         ai_enabled: 'true',
         ai_tone: 'professional',
         ai_custom_prompt: '',
+        hide_repo_links: 'false',
         event_push: 'true',
         event_pull_request: 'true',
         event_issues: 'true',
@@ -90,6 +91,14 @@ function getEvents(limit = 50, offset = 0) {
     return db
         .prepare('SELECT * FROM events ORDER BY created_at DESC LIMIT ? OFFSET ?')
         .all(limit, offset);
+}
+
+function getEventById(id) {
+    return db.prepare('SELECT * FROM events WHERE id = ?').get(id);
+}
+
+function updateEventDiscordStatus(id, sent, error) {
+    db.prepare('UPDATE events SET discord_sent = ?, error = ? WHERE id = ?').run(sent ? 1 : 0, error || '', id);
 }
 
 function getEventCount() {
@@ -166,6 +175,8 @@ module.exports = {
     init,
     saveEvent,
     getEvents,
+    getEventById,
+    updateEventDiscordStatus,
     getEventCount,
     getStats,
     getSetting,

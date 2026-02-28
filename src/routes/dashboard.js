@@ -1,6 +1,8 @@
 const express = require('express');
 const crypto = require('crypto');
 const eventStore = require('../services/eventStore');
+const discordSender = require('../services/discordSender');
+const embeds = require('../embeds');
 
 function csrfCheck(req, res, next) {
     if (!req.body._csrf || req.body._csrf !== req.session.csrf) {
@@ -78,6 +80,7 @@ function createDashboardRouter(config, auth) {
                 'ai_enabled',
                 'ai_tone',
                 'ai_custom_prompt',
+                'hide_repo_links',
                 'event_push',
                 'event_pull_request',
                 'event_issues',
@@ -88,6 +91,7 @@ function createDashboardRouter(config, auth) {
 
             const checkboxKeys = [
                 'ai_enabled',
+                'hide_repo_links',
                 'event_push',
                 'event_pull_request',
                 'event_issues',
@@ -122,6 +126,49 @@ function createDashboardRouter(config, auth) {
         const limit = Math.min(50, parseInt(req.query.limit) || 20);
         const offset = parseInt(req.query.offset) || 0;
         res.json(eventStore.getEvents(limit, offset));
+    });
+
+    // ─── Resend event to Discord ───
+    router.post('/api/events/:id/resend', auth.requireAuth, async (req, res) => {
+        try {
+            const event = eventStore.getEventById(parseInt(req.params.id));
+            if (!event) {
+                return res.status(404).json({ error: 'Event not found' });
+            }
+
+            // Rebuild the embed from stored event data
+            const eventData = {
+                type: event.type,
+                action: event.action,
+                repo: event.repo,
+                sender: event.sender,
+                senderAvatar: event.sender_avatar,
+                title: event.title,
+                originalSummary: event.original_summary,
+                url: event.url,
+            };
+
+            const embedBuilder = embeds.getEmbedBuilder(event.type);
+            const rawEmbed = embedBuilder
+                ? embedBuilder(eventData, event.ai_summary)
+                : embeds.buildFallbackEmbed(eventData, event.ai_summary);
+            const embed = embeds.stripLinks(rawEmbed);
+
+            const payload = discordSender.buildPayload(embed);
+            const result = await discordSender.send(config.discord.webhookUrl, payload);
+
+            // Update the event status in DB
+            eventStore.updateEventDiscordStatus(event.id, result.success, result.error || '');
+
+            if (result.success) {
+                res.json({ success: true, message: 'Event resent to Discord' });
+            } else {
+                res.status(502).json({ success: false, error: result.error });
+            }
+        } catch (err) {
+            console.error('[Dashboard] Resend error:', err);
+            res.status(500).json({ error: 'Failed to resend event' });
+        }
     });
 
     return router;

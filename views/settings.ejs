@@ -108,6 +108,24 @@
                                     </div>
                                 </div>
 
+                                <!-- Discord Options -->
+                                <div class="settings-section">
+                                    <h3>💬 Discord Options</h3>
+                                    <p class="section-desc">Control what's included in Discord messages.</p>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">Hide Repository Links</div>
+                                            <div class="setting-desc">Remove all GitHub links from Discord embeds (repo URL, commit links, author profile)</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="hide_repo_links" <%=settings.hide_repo_links==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <!-- Event Filters -->
                                 <div class="settings-section">
                                     <h3>📡 Event Types</h3>
