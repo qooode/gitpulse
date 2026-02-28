@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head') %>
+        <title>GitPulse — Dashboard</title>
+</head>
+
+<body>
+    <div class="app">
+        <%- include('partials/sidebar') %>
+
+            <main class="main">
+                <div class="page-header">
+                    <h2>Overview</h2>
+                    <p>Your GitHub → Discord relay at a glance</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value">
+                            <%= stats.today %>
+                        </div>
+                        <div class="stat-label">Events Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value">
+                            <%= stats.total %>
+                        </div>
+                        <div class="stat-label">Total Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🤖</div>
+                        <div class="stat-value">
+                            <%= stats.aiTranslated %>
+                        </div>
+                        <div class="stat-label">AI Translations</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">
+                            <%= stats.total> 0 ? Math.round((stats.sent / stats.total) * 100) : 100 %>%
+                        </div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+
+                <!-- Setup Hint (shows when no events) -->
+                <% if (stats.total===0) { %>
+                    <div class="setup-card">
+                        <h3>🔗 Connect Your First Repository</h3>
+                        <p>Add this URL as a webhook in your GitHub repository settings:</p>
+                        <code>https://your-domain.com/api/webhook</code>
+                        <p style="margin-top: 12px;">Set the <strong>Content type</strong> to <code
+                                style="display:inline; padding:2px 6px; background:rgba(0,0,0,0.3); border-radius:4px; font-size: 12px;">application/json</code>
+                            and use your <code
+                                style="display:inline; padding:2px 6px; background:rgba(0,0,0,0.3); border-radius:4px; font-size: 12px;">GITHUB_WEBHOOK_SECRET</code>
+                            as the secret.</p>
+                    </div>
+                    <% } %>
+
+                        <!-- Recent Events -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Recent Events</h3>
+                                <% if (recentEvents.length> 0) { %>
+                                    <a href="/events" class="btn btn-ghost"
+                                        style="padding: 6px 14px; font-size: 13px;">View All →</a>
+                                    <% } %>
+                            </div>
+
+                            <% if (recentEvents.length===0) { %>
+                                <div class="empty-state">
+                                    <div class="empty-icon">📡</div>
+                                    <h4>No events yet</h4>
+                                    <p>Events will appear here once your webhook starts receiving data.</p>
+                                </div>
+                                <% } else { %>
+                                    <table class="events-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Repository</th>
+                                                <th>Summary</th>
+                                                <th>Status</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% recentEvents.forEach(function(event) { %>
+                                                <tr>
+                                                    <td>
+                                                        <span class="event-type-badge <%= event.type %>">
+                                                            <%= event.type %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <%= event.repo %>
+                                                    </td>
+                                                    <td class="text-truncate">
+                                                        <%= event.ai_summary || event.title || event.original_summary
+                                                            || '—' %>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="status-dot <%= event.discord_sent ? 'sent' : 'failed' %>"></span>
+                                                        <%= event.discord_sent ? 'Sent' : 'Failed' %>
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        <%= new Date(event.created_at).toLocaleString() %>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                    <% } %>
+                        </div>
+            </main>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

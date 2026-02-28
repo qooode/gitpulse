@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head') %>
+        <title>GitPulse — Events</title>
+</head>
+
+<body>
+    <div class="app">
+        <%- include('partials/sidebar') %>
+
+            <main class="main">
+                <div class="page-header">
+                    <h2>Events</h2>
+                    <p>All webhook events processed by GitPulse (<%= total %> total)</p>
+                </div>
+
+                <div class="card">
+                    <% if (events.length===0) { %>
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <h4>No events found</h4>
+                            <p>Webhook events will show up here once they're received.</p>
+                        </div>
+                        <% } else { %>
+                            <table class="events-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Repository</th>
+                                        <th>Title</th>
+                                        <th>AI Summary</th>
+                                        <th>Status</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% events.forEach(function(event) { %>
+                                        <tr>
+                                            <td>
+                                                <span class="event-type-badge <%= event.type %>">
+                                                    <%= event.type %>
+                                                        <%= event.action ? ` (${event.action})` : '' %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <%= event.repo %>
+                                            </td>
+                                            <td class="text-truncate">
+                                                <%= event.title || '—' %>
+                                            </td>
+                                            <td class="text-truncate">
+                                                <%= event.ai_summary || '—' %>
+                                            </td>
+                                            <td>
+                                                <% if (event.error) { %>
+                                                    <span class="status-dot failed"></span>
+                                                    <span title="<%= event.error %>" style="cursor: help;">Error</span>
+                                                    <% } else { %>
+                                                        <span
+                                                            class="status-dot <%= event.discord_sent ? 'sent' : 'failed' %>"></span>
+                                                        <%= event.discord_sent ? 'Sent' : 'Not sent' %>
+                                                            <% } %>
+                                            </td>
+                                            <td class="text-muted">
+                                                <%= new Date(event.created_at).toLocaleString() %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+
+                            <% if (totalPages> 1) { %>
+                                <div class="pagination">
+                                    <a href="/events?page=<%= currentPage - 1 %>"
+                                        class="<%= currentPage <= 1 ? 'disabled' : '' %>">
+                                        ← Previous
+                                    </a>
+
+                                    <% for (let i=Math.max(1, currentPage - 2); i <=Math.min(totalPages, currentPage +
+                                        2); i++) { %>
+                                        <% if (i===currentPage) { %>
+                                            <span class="current">
+                                                <%= i %>
+                                            </span>
+                                            <% } else { %>
+                                                <a href="/events?page=<%= i %>">
+                                                    <%= i %>
+                                                </a>
+                                                <% } %>
+                                                    <% } %>
+
+                                                        <a href="/events?page=<%= currentPage + 1 %>"
+                                                            class="<%= currentPage >= totalPages ? 'disabled' : '' %>">
+                                                            Next →
+                                                        </a>
+                                </div>
+                                <% } %>
+                                    <% } %>
+                </div>
+            </main>
+    </div>
+</body>
+
+</html>

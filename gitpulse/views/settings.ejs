@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head') %>
+        <title>GitPulse — Settings</title>
+</head>
+
+<body>
+    <div class="app">
+        <%- include('partials/sidebar') %>
+
+            <main class="main">
+                <div class="page-header">
+                    <h2>Settings</h2>
+                    <p>Configure your GitPulse instance</p>
+                </div>
+
+                <% if (saved) { %>
+                    <div class="alert alert-success">
+                        ✅ Settings saved successfully!
+                    </div>
+                    <% } %>
+
+                        <form method="POST" action="/settings">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <div class="settings-grid">
+
+                                <!-- Connection Status -->
+                                <div class="settings-section">
+                                    <h3>🔐 Connections</h3>
+                                    <p class="section-desc">These are configured via environment variables and cannot be
+                                        changed here.</p>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">Discord Webhook <span class="env-badge">ENV</span>
+                                            </div>
+                                            <div class="setting-desc">Where events are sent</div>
+                                        </div>
+                                        <span class="env-value">
+                                            <% if (config.hasDiscord) { %>
+                                                <span class="status-dot sent"></span> Connected
+                                                <% } else { %>
+                                                    <span class="status-dot failed"></span> Not configured
+                                                    <% } %>
+                                        </span>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">OpenRouter AI <span class="env-badge">ENV</span>
+                                            </div>
+                                            <div class="setting-desc">Model: <code
+                                                    style="font-size:12px; padding:1px 5px; background:rgba(0,0,0,0.2); border-radius:4px;"><%= config.aiModel %></code>
+                                            </div>
+                                        </div>
+                                        <span class="env-value">
+                                            <% if (config.hasAI) { %>
+                                                <span class="status-dot sent"></span> Connected
+                                                <% } else { %>
+                                                    <span class="status-dot failed"></span> Not configured
+                                                    <% } %>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- AI Settings -->
+                                <div class="settings-section">
+                                    <h3>🤖 AI Translation</h3>
+                                    <p class="section-desc">Control how AI translates technical GitHub events into
+                                        human-friendly language.</p>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">Enable AI Translation</div>
+                                            <div class="setting-desc">When disabled, events are sent with structured but
+                                                non-AI formatting</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="ai_enabled" <%=settings.ai_enabled==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">Tone</div>
+                                            <div class="setting-desc">Choose the writing style for AI summaries</div>
+                                        </div>
+                                        <select name="ai_tone" class="form-select">
+                                            <option value="professional" <%=settings.ai_tone==='professional'
+                                                ? 'selected' : '' %>>Professional</option>
+                                            <option value="casual" <%=settings.ai_tone==='casual' ? 'selected' : '' %>
+                                                >Casual</option>
+                                            <option value="fun" <%=settings.ai_tone==='fun' ? 'selected' : '' %>>Fun &
+                                                Enthusiastic</option>
+                                        </select>
+                                    </div>
+
+                                    <div style="padding-top: 14px;">
+                                        <div class="setting-name">Custom Prompt (optional)</div>
+                                        <div class="setting-desc" style="margin-top: 2px; margin-bottom: 4px;">Override
+                                            the default tone with your own system prompt</div>
+                                        <textarea name="ai_custom_prompt" class="form-textarea"
+                                            placeholder="e.g. You are a pirate who announces project updates in nautical terms..."><%= settings.ai_custom_prompt || '' %></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Event Filters -->
+                                <div class="settings-section">
+                                    <h3>📡 Event Types</h3>
+                                    <p class="section-desc">Choose which GitHub events to process and forward to
+                                        Discord.</p>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">🚀 Push</div>
+                                            <div class="setting-desc">Commits pushed to branches</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_push" <%=settings.event_push==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">✨ Pull Request</div>
+                                            <div class="setting-desc">PR opened, merged, or closed</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_pull_request"
+                                                <%=settings.event_pull_request==='true' ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">🐛 Issues</div>
+                                            <div class="setting-desc">Issues opened, closed, or labeled</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_issues" <%=settings.event_issues==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">🎉 Release</div>
+                                            <div class="setting-desc">New releases published</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_release"
+                                                <%=settings.event_release==='true' ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">⭐ Star</div>
+                                            <div class="setting-desc">When someone stars the repo</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_star" <%=settings.event_star==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="setting-row">
+                                        <div class="setting-info">
+                                            <div class="setting-name">🍴 Fork</div>
+                                            <div class="setting-desc">When someone forks the repo</div>
+                                        </div>
+                                        <label class="toggle">
+                                            <input type="checkbox" name="event_fork" <%=settings.event_fork==='true'
+                                                ? 'checked' : '' %>>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Save -->
+                                <div style="text-align: right;">
+                                    <button type="submit" class="btn btn-primary"
+                                        style="width: auto; padding: 12px 40px;">
+                                        Save Settings
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+            </main>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

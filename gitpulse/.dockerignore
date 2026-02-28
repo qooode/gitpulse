@@ -1,0 +1,10 @@
+node_modules/
+data/
+.env
+.env.example
+.git/
+.gitignore
+README.md
+LICENSE
+docker-compose.yml
+.DS_Store

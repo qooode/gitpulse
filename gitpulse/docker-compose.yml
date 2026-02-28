@@ -1,0 +1,12 @@
+services:
+  gitpulse:
+    build: .
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file: .env
+    volumes:
+      - gitpulse-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  gitpulse-data:

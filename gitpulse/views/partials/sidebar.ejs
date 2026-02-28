@@ -1,0 +1,35 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo-icon">⚡</div>
+        <div>
+            <h1>GitPulse</h1>
+            <span class="version">v1.0.0</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="/" class="nav-item <%= page === 'overview' ? 'active' : '' %>">
+            <span class="nav-icon">📊</span>
+            Overview
+        </a>
+        <a href="/events" class="nav-item <%= page === 'events' ? 'active' : '' %>">
+            <span class="nav-icon">📡</span>
+            Events
+        </a>
+        <a href="/settings" class="nav-item <%= page === 'settings' ? 'active' : '' %>">
+            <span class="nav-icon">⚙️</span>
+            Settings
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <form method="POST" action="/logout" style="margin:0">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="nav-item"
+                style="width:100%; background:none; border:none; cursor:pointer; font-family:inherit; font-size:inherit; text-align:left;">
+                <span class="nav-icon">🚪</span>
+                Sign Out
+            </button>
+        </form>
+    </div>
+</div>
