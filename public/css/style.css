@@ -151,8 +151,9 @@ a:hover {
 }
 
 .login-logo .logo-icon [data-lucide] {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
+  stroke-width: 2.25;
 }
 
 .login-logo h1 {
@@ -345,8 +346,9 @@ a:hover {
 }
 
 .sidebar-header .logo-icon [data-lucide] {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.25;
 }
 
 .sidebar-header h1 {
