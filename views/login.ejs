@@ -4,18 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="GitPulse — Beautiful GitHub to Discord webhook relay with AI-powered translations">
+  <meta name="description" content="GitPulse — GitHub to Discord webhook relay with AI-powered translations">
   <title>GitPulse — Login</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
 
 <body>
   <div class="login-wrapper">
     <div class="login-card">
       <div class="login-logo">
-        <div class="logo-icon">⚡</div>
+        <div class="logo-icon"><i data-lucide="zap"></i></div>
         <h1>GitPulse</h1>
         <p>Sign in to your dashboard</p>
       </div>
@@ -44,6 +45,8 @@
           </form>
     </div>
   </div>
+
+  <script>lucide.createIcons();</script>
 </body>
 
 </html>

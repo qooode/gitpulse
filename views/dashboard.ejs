@@ -13,34 +13,34 @@
             <main class="main">
                 <div class="page-header">
                     <h2>Overview</h2>
-                    <p>Your GitHub → Discord relay at a glance</p>
+                    <p>Your GitHub to Discord relay at a glance.</p>
                 </div>
 
                 <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon">📅</div>
+                        <div class="stat-icon"><i data-lucide="calendar"></i></div>
                         <div class="stat-value">
                             <%= stats.today %>
                         </div>
                         <div class="stat-label">Events Today</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📊</div>
+                        <div class="stat-icon"><i data-lucide="bar-chart-3"></i></div>
                         <div class="stat-value">
                             <%= stats.total %>
                         </div>
                         <div class="stat-label">Total Events</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">🤖</div>
+                        <div class="stat-icon"><i data-lucide="sparkles"></i></div>
                         <div class="stat-value">
                             <%= stats.aiTranslated %>
                         </div>
                         <div class="stat-label">AI Translations</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">✅</div>
+                        <div class="stat-icon"><i data-lucide="check-circle-2"></i></div>
                         <div class="stat-value">
                             <%= stats.total> 0 ? Math.round((stats.sent / stats.total) * 100) : 100 %>%
                         </div>
@@ -51,14 +51,14 @@
                 <!-- Setup Hint (shows when no events) -->
                 <% if (stats.total===0) { %>
                     <div class="setup-card">
-                        <h3>🔗 Connect Your First Repository</h3>
+                        <h3><i data-lucide="link"></i> Connect Your First Repository</h3>
                         <p>Add this URL as a webhook in your GitHub repository settings:</p>
                         <code>https://your-domain.com/api/webhook</code>
-                        <p style="margin-top: 12px;">Set the <strong>Content type</strong> to <code
-                                style="display:inline; padding:2px 6px; background:rgba(0,0,0,0.3); border-radius:4px; font-size: 12px;">application/json</code>
-                            and use your <code
-                                style="display:inline; padding:2px 6px; background:rgba(0,0,0,0.3); border-radius:4px; font-size: 12px;">GITHUB_WEBHOOK_SECRET</code>
-                            as the secret.</p>
+                        <p style="margin-top: 12px;">Set the <strong>Content type</strong> to
+                            <code class="inline-code">application/json</code>
+                            and use your <code class="inline-code">GITHUB_WEBHOOK_SECRET</code>
+                            as the secret.
+                        </p>
                     </div>
                     <% } %>
 
@@ -67,14 +67,13 @@
                             <div class="card-header">
                                 <h3>Recent Events</h3>
                                 <% if (recentEvents.length> 0) { %>
-                                    <a href="/events" class="btn btn-ghost"
-                                        style="padding: 6px 14px; font-size: 13px;">View All →</a>
+                                    <a href="/events" class="btn-ghost">View All</a>
                                     <% } %>
                             </div>
 
                             <% if (recentEvents.length===0) { %>
                                 <div class="empty-state">
-                                    <div class="empty-icon">📡</div>
+                                    <div class="empty-icon"><i data-lucide="inbox"></i></div>
                                     <h4>No events yet</h4>
                                     <p>Events will appear here once your webhook starts receiving data.</p>
                                 </div>
@@ -122,6 +121,7 @@
     </div>
 
     <script src="/js/dashboard.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 
 </html>

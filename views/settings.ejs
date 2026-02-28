@@ -13,12 +13,13 @@
             <main class="main">
                 <div class="page-header">
                     <h2>Settings</h2>
-                    <p>Configure your GitPulse instance</p>
+                    <p>Configure your GitPulse instance.</p>
                 </div>
 
                 <% if (saved) { %>
                     <div class="alert alert-success">
-                        ✅ Settings saved successfully!
+                        <i data-lucide="check-circle-2"></i>
+                        Settings saved successfully.
                     </div>
                     <% } %>
 
@@ -28,7 +29,7 @@
 
                                 <!-- Connection Status -->
                                 <div class="settings-section">
-                                    <h3>🔐 Connections</h3>
+                                    <h3><i data-lucide="plug"></i> Connections</h3>
                                     <p class="section-desc">These are configured via environment variables and cannot be
                                         changed here.</p>
 
@@ -52,8 +53,7 @@
                                             <div class="setting-name">OpenRouter AI <span class="env-badge">ENV</span>
                                             </div>
                                             <div class="setting-desc">Model: <code
-                                                    style="font-size:12px; padding:1px 5px; background:rgba(0,0,0,0.2); border-radius:4px;"><%= config.aiModel %></code>
-                                            </div>
+                                                    class="inline-code"><%= config.aiModel %></code></div>
                                         </div>
                                         <span class="env-value">
                                             <% if (config.hasAI) { %>
@@ -67,7 +67,7 @@
 
                                 <!-- AI Settings -->
                                 <div class="settings-section">
-                                    <h3>🤖 AI Translation</h3>
+                                    <h3><i data-lucide="sparkles"></i> AI Translation</h3>
                                     <p class="section-desc">Control how AI translates technical GitHub events into
                                         human-friendly language.</p>
 
@@ -99,7 +99,7 @@
                                         </select>
                                     </div>
 
-                                    <div style="padding-top: 14px;">
+                                    <div style="padding-top: 12px;">
                                         <div class="setting-name">Custom Prompt (optional)</div>
                                         <div class="setting-desc" style="margin-top: 2px; margin-bottom: 4px;">Override
                                             the default tone with your own system prompt</div>
@@ -110,17 +110,18 @@
 
                                 <!-- Discord Options -->
                                 <div class="settings-section">
-                                    <h3>💬 Discord Options</h3>
+                                    <h3><i data-lucide="message-square"></i> Discord Options</h3>
                                     <p class="section-desc">Control what's included in Discord messages.</p>
 
                                     <div class="setting-row">
                                         <div class="setting-info">
                                             <div class="setting-name">Hide Repository Links</div>
-                                            <div class="setting-desc">Remove all GitHub links from Discord embeds (repo URL, commit links, author profile)</div>
+                                            <div class="setting-desc">Remove all GitHub links from Discord embeds (repo
+                                                URL, commit links, author profile)</div>
                                         </div>
                                         <label class="toggle">
-                                            <input type="checkbox" name="hide_repo_links" <%=settings.hide_repo_links==='true'
-                                                ? 'checked' : '' %>>
+                                            <input type="checkbox" name="hide_repo_links"
+                                                <%=settings.hide_repo_links==='true' ? 'checked' : '' %>>
                                             <span class="toggle-slider"></span>
                                         </label>
                                     </div>
@@ -128,13 +129,13 @@
 
                                 <!-- Event Filters -->
                                 <div class="settings-section">
-                                    <h3>📡 Event Types</h3>
+                                    <h3><i data-lucide="filter"></i> Event Types</h3>
                                     <p class="section-desc">Choose which GitHub events to process and forward to
                                         Discord.</p>
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">🚀 Push</div>
+                                            <div class="setting-name">Push</div>
                                             <div class="setting-desc">Commits pushed to branches</div>
                                         </div>
                                         <label class="toggle">
@@ -146,7 +147,7 @@
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">✨ Pull Request</div>
+                                            <div class="setting-name">Pull Request</div>
                                             <div class="setting-desc">PR opened, merged, or closed</div>
                                         </div>
                                         <label class="toggle">
@@ -158,7 +159,7 @@
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">🐛 Issues</div>
+                                            <div class="setting-name">Issues</div>
                                             <div class="setting-desc">Issues opened, closed, or labeled</div>
                                         </div>
                                         <label class="toggle">
@@ -170,7 +171,7 @@
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">🎉 Release</div>
+                                            <div class="setting-name">Release</div>
                                             <div class="setting-desc">New releases published</div>
                                         </div>
                                         <label class="toggle">
@@ -182,7 +183,7 @@
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">⭐ Star</div>
+                                            <div class="setting-name">Star</div>
                                             <div class="setting-desc">When someone stars the repo</div>
                                         </div>
                                         <label class="toggle">
@@ -194,7 +195,7 @@
 
                                     <div class="setting-row">
                                         <div class="setting-info">
-                                            <div class="setting-name">🍴 Fork</div>
+                                            <div class="setting-name">Fork</div>
                                             <div class="setting-desc">When someone forks the repo</div>
                                         </div>
                                         <label class="toggle">
@@ -206,9 +207,8 @@
                                 </div>
 
                                 <!-- Save -->
-                                <div style="text-align: right;">
-                                    <button type="submit" class="btn btn-primary"
-                                        style="width: auto; padding: 12px 40px;">
+                                <div style="display: flex; justify-content: flex-end;">
+                                    <button type="submit" class="btn btn-primary" style="width: auto; padding: 0 24px;">
                                         Save Settings
                                     </button>
                                 </div>
@@ -219,6 +219,7 @@
     </div>
 
     <script src="/js/dashboard.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 
 </html>

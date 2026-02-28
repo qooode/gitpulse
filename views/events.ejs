@@ -19,7 +19,7 @@
                 <div class="card">
                     <% if (events.length===0) { %>
                         <div class="empty-state">
-                            <div class="empty-icon">📭</div>
+                            <div class="empty-icon"><i data-lucide="inbox"></i></div>
                             <h4>No events found</h4>
                             <p>Webhook events will show up here once they're received.</p>
                         </div>
@@ -70,7 +70,7 @@
                                             <td>
                                                 <button class="btn-resend" data-event-id="<%= event.id %>"
                                                     title="Resend to Discord">
-                                                    🔁
+                                                    <i data-lucide="refresh-cw"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -81,9 +81,7 @@
                             <% if (totalPages> 1) { %>
                                 <div class="pagination">
                                     <a href="/events?page=<%= currentPage - 1 %>"
-                                        class="<%= currentPage <= 1 ? 'disabled' : '' %>">
-                                        ← Previous
-                                    </a>
+                                        class="<%= currentPage <= 1 ? 'disabled' : '' %>">Previous</a>
 
                                     <% for (let i=Math.max(1, currentPage - 2); i <=Math.min(totalPages, currentPage +
                                         2); i++) { %>
@@ -99,9 +97,7 @@
                                                     <% } %>
 
                                                         <a href="/events?page=<%= currentPage + 1 %>"
-                                                            class="<%= currentPage >= totalPages ? 'disabled' : '' %>">
-                                                            Next →
-                                                        </a>
+                                                            class="<%= currentPage >= totalPages ? 'disabled' : '' %>">Next</a>
                                 </div>
                                 <% } %>
                                     <% } %>
@@ -110,15 +106,17 @@
     </div>
 
     <script>
+        lucide.createIcons();
+
         document.querySelectorAll('.btn-resend').forEach(function (btn) {
             btn.addEventListener('click', async function () {
                 var eventId = this.dataset.eventId;
                 var button = this;
-                var originalText = button.textContent;
                 var row = button.closest('tr');
 
                 button.disabled = true;
-                button.textContent = '⏳';
+                button.innerHTML = '<i data-lucide="loader-2" style="animation: spin 1s linear infinite"></i>';
+                lucide.createIcons({ nodes: [button] });
 
                 try {
                     var res = await fetch('/api/events/' + eventId + '/resend', {
@@ -128,23 +126,50 @@
                     var data = await res.json();
 
                     if (res.ok && data.success) {
-                        button.textContent = '✅';
+                        button.innerHTML = '<i data-lucide="check"></i>';
+                        lucide.createIcons({ nodes: [button] });
                         var statusCell = row.children[4];
                         if (statusCell) {
                             statusCell.innerHTML = '<span class="status-dot sent"></span>Sent';
                         }
-                        setTimeout(function () { button.textContent = originalText; button.disabled = false; }, 2000);
+                        setTimeout(function () {
+                            button.innerHTML = '<i data-lucide="refresh-cw"></i>';
+                            lucide.createIcons({ nodes: [button] });
+                            button.disabled = false;
+                        }, 2000);
                     } else {
-                        button.textContent = '❌';
-                        setTimeout(function () { button.textContent = originalText; button.disabled = false; }, 2000);
+                        button.innerHTML = '<i data-lucide="x"></i>';
+                        lucide.createIcons({ nodes: [button] });
+                        setTimeout(function () {
+                            button.innerHTML = '<i data-lucide="refresh-cw"></i>';
+                            lucide.createIcons({ nodes: [button] });
+                            button.disabled = false;
+                        }, 2000);
                     }
                 } catch (err) {
-                    button.textContent = '❌';
-                    setTimeout(function () { button.textContent = originalText; button.disabled = false; }, 2000);
+                    button.innerHTML = '<i data-lucide="x"></i>';
+                    lucide.createIcons({ nodes: [button] });
+                    setTimeout(function () {
+                        button.innerHTML = '<i data-lucide="refresh-cw"></i>';
+                        lucide.createIcons({ nodes: [button] });
+                        button.disabled = false;
+                    }, 2000);
                 }
             });
         });
     </script>
+
+    <style>
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </body>
 
 </html>
