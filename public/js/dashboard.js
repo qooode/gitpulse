@@ -1,4 +1,27 @@
-// Auto-refresh stats on the overview page
+// ─── Mobile Sidebar Toggle ───
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+    }
+}
+
+// Close sidebar on Escape key
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        const sidebar = document.querySelector('.sidebar.open');
+        if (sidebar) toggleSidebar();
+    }
+});
+
+// Make toggleSidebar globally available
+window.toggleSidebar = toggleSidebar;
+
+// ─── Auto-refresh stats on the overview page ───
 (function () {
     const statsContainer = document.querySelector('.stats-grid');
     if (!statsContainer) return;
@@ -27,7 +50,7 @@
     setInterval(refreshStats, 30000);
 })();
 
-// Auto-dismiss alerts after 5 seconds
+// ─── Auto-dismiss alerts after 5 seconds ───
 (function () {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach((alert) => {

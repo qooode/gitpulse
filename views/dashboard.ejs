@@ -8,6 +8,11 @@
 
 <body>
     <div class="app">
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+            <i data-lucide="menu"></i>
+        </button>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
         <%- include('partials/sidebar') %>
 
             <main class="main">
@@ -19,36 +24,44 @@
                 <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon"><i data-lucide="calendar"></i></div>
+                        <div class="stat-header">
+                            <span class="stat-label">Events Today</span>
+                            <div class="stat-icon"><i data-lucide="calendar"></i></div>
+                        </div>
                         <div class="stat-value">
                             <%= stats.today %>
                         </div>
-                        <div class="stat-label">Events Today</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i data-lucide="bar-chart-3"></i></div>
+                        <div class="stat-header">
+                            <span class="stat-label">Total Events</span>
+                            <div class="stat-icon"><i data-lucide="activity"></i></div>
+                        </div>
                         <div class="stat-value">
                             <%= stats.total %>
                         </div>
-                        <div class="stat-label">Total Events</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i data-lucide="sparkles"></i></div>
+                        <div class="stat-header">
+                            <span class="stat-label">AI Translations</span>
+                            <div class="stat-icon"><i data-lucide="sparkles"></i></div>
+                        </div>
                         <div class="stat-value">
                             <%= stats.aiTranslated %>
                         </div>
-                        <div class="stat-label">AI Translations</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i data-lucide="check-circle-2"></i></div>
+                        <div class="stat-header">
+                            <span class="stat-label">Success Rate</span>
+                            <div class="stat-icon"><i data-lucide="check-circle-2"></i></div>
+                        </div>
                         <div class="stat-value">
                             <%= stats.total> 0 ? Math.round((stats.sent / stats.total) * 100) : 100 %>%
                         </div>
-                        <div class="stat-label">Success Rate</div>
                     </div>
                 </div>
 
-                <!-- Setup Hint (shows when no events) -->
+                <!-- Setup Hint -->
                 <% if (stats.total===0) { %>
                     <div class="setup-card">
                         <h3><i data-lucide="link"></i> Connect Your First Repository</h3>

@@ -8,6 +8,11 @@
 
 <body>
     <div class="app">
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">
+            <i data-lucide="menu"></i>
+        </button>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
         <%- include('partials/sidebar') %>
 
             <main class="main">
@@ -105,6 +110,7 @@
             </main>
     </div>
 
+    <script src="/js/dashboard.js"></script>
     <script>
         lucide.createIcons();
 
@@ -158,18 +164,6 @@
             });
         });
     </script>
-
-    <style>
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
 </body>
 
 </html>
